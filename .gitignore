@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sensitive / personal data — never commit
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+credentials.*
+
+# Claude Code local state
+.claude/settings.local.json
+
+# Auto-generated indexes (rebuilt by /sync)
+_index/
+
+# Personal notes — local only
+daily/
+meetings/
+people/
+projects/
+
+# Editor state
+.obsidian/
