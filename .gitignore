@@ -26,11 +26,17 @@ credentials.*
 # Auto-generated indexes (rebuilt by /sync)
 _index/
 
+# Sync manifest — incremental build state
+.sync-manifest.json
+
 # Personal notes — local only
 daily/
 meetings/
 people/
 projects/
+
+# Local
+local/
 
 # Editor state
 .obsidian/

@@ -28,7 +28,8 @@ A personal knowledge management system for product managers. Notes are Markdown 
 | `/status <project>` | Generate a project status report |
 | `/standup` | Generate a standup from yesterday's notes |
 | `/week [YYYY-MM-DD]` | Generate a weekly recap |
-| `/sync` | Rebuild all index files from frontmatter |
+| `/sync` | Incrementally rebuild only the indexes affected by changed notes |
+| `/sync --force` | Full rebuild of all indexes from scratch |
 
 ## Action Item Lifecycle
 
@@ -69,6 +70,16 @@ Run `/sync` and the item moves from `_index/open-actions.md` to the resolved sec
 
 1. Create or update any note using a skill.
 2. Keep `projects:` and `people:` frontmatter accurate.
-3. Run `/sync` — all indexes are fully regenerated.
+3. Run `/sync` — only the affected indexes are rebuilt.
 
-`/sync` is idempotent and always safe to re-run.
+## How `/sync` works
+
+`/sync` is incremental. After the first run it writes a `.sync-manifest.json` that caches every note's frontmatter (title, date, projects, people, action_items, resolves, decisions). On subsequent runs:
+
+1. `find -newer .sync-manifest.json` identifies only changed/new files — everything else is read from the cache.
+2. Only the indexes touched by those files are rebuilt (e.g. adding one meeting rebuilds its project + person indexes and the action lists, nothing else).
+3. If nothing changed, `/sync` exits immediately with "already up to date".
+
+Because the manifest caches all fields needed for index rendering, **rebuilding a dirty index reads zero additional source files** — it assembles purely from cached data. The only I/O for a dirty index is writing its output file.
+
+Run `/sync --force` to discard the manifest and do a full rebuild from scratch (useful after manual edits outside of skills, or if the manifest gets corrupted).

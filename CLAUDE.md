@@ -102,7 +102,7 @@ Use only slugs that have (or will have) a corresponding file. `/sync` will warn 
 3. Run `/sync` — this scans every note's frontmatter and rewrites all `_index/` files.
 4. All indexes now reflect the latest state across all notes.
 
-`/sync` is a full regeneration — idempotent, always safe to re-run.
+`/sync` runs **incrementally by default** — it compares note files against `.sync-manifest.json` (generated on first run), reads only changed/new files, and rebuilds only the affected indexes. Run `/sync --force` to force a full rebuild of everything.
 
 ---
 
